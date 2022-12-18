@@ -30,12 +30,29 @@ const playRound = (playerChoice, computerChoice) => {
    return winner;
 };
 
+/**
+ * pseudocode of making decision who would win;
+ * 
+ * create variable for each player, computer and tied
+ * increment them based on the round result
+ * compare both player and computer and log wether
+ * either of them would win or the result is tied;
+ * 
+ * if player > computer then player win else computer win;
+ */
+
 const game = () => {
-   let roundResults = []
+   let playerScore = 0;
+   let computerScore = 0;
+   let tiedScore = 0;
+
    for(let i = 0; i < 5; i++) {
       const result = playRound(getPlayerChoice(), getComputerChoice());
-      console.log(result);
+      result === "player" ? playerScore++ : result === "computer" ? computerScore++ : tiedScore++; 
    }
+
+   const finalResult = playerScore > computerScore ? "PLAYER WIN!" : playerScore < computerScore ? "COMPUTER WIN!" : "TIED";
+   return finalResult;
 }
 
 game();
