@@ -48,11 +48,12 @@ const game = () => {
 
    for(let i = 0; i < 5; i++) {
       const result = playRound(getPlayerChoice(), getComputerChoice());
+      console.log(result);
       result === "player" ? playerScore++ : result === "computer" ? computerScore++ : tiedScore++; 
    }
 
    const finalResult = playerScore > computerScore ? "PLAYER WIN!" : playerScore < computerScore ? "COMPUTER WIN!" : "TIED";
-   return finalResult;
+   console.log(finalResult);
 }
 
 game();
