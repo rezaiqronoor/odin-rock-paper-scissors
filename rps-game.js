@@ -8,55 +8,105 @@ const getComputerChoice = () => {
    return result;
 };
 
-const getPlayerChoice = () => {
-   const playerChoice = prompt("Type Rock, Paper or Scissors to choose your pick").toLowerCase();
-
-   if(playerChoice === "rock" || playerChoice === "paper" || playerChoice || "scissors") {
-      return playerChoice;
-   }
-   else getPlayerChoice();
-};
-
 const playRound = (playerChoice, computerChoice) => {
+   const roundDOM = document.querySelector(".round");
+   const playerChoiceDOM = document.querySelector(".playerChoice");
+   const computerChoiceDOM = document.querySelector(".computerChoice");
+   const roundWinnerDOM = document.querySelector(".roundWinner");
+
+   // It breaks after 10, fix it in the future.
+   const currentRoundCount = roundDOM.textContent.charAt(
+      roundDOM.textContent.length - 1
+   );
+   roundDOM.textContent = "Round " + (Number(currentRoundCount) + 1);
+   playerChoiceDOM.textContent = "Player's Choice: " + playerChoice;
+   computerChoiceDOM.textContent = "Computer's Choice: " + computerChoice;
+
    let winner;
 
-   switch(playerChoice) {
-      case "rock": computerChoice === "rock" ? winner = "tied" : computerChoice === "paper" ? winner = "computer" : winner = "player";
-      case "paper": computerChoice === "rock" ? winner = "player" : computerChoice === "paper" ? winner = "tied" : winner = "computer";
-      case "scissors": computerChoice === "rock" ? winner = "computer" : computerChoice === "paper" ? winner = "player" : winner = "tied";
-      default: {};
+   switch (playerChoice) {
+      case "rock":
+         computerChoice === "rock"
+            ? (winner = "tied")
+            : computerChoice === "paper"
+            ? (winner = "computer")
+            : (winner = "player");
+      case "paper":
+         computerChoice === "rock"
+            ? (winner = "player")
+            : computerChoice === "paper"
+            ? (winner = "tied")
+            : (winner = "computer");
+      case "scissors":
+         computerChoice === "rock"
+            ? (winner = "computer")
+            : computerChoice === "paper"
+            ? (winner = "player")
+            : (winner = "tied");
+      default: {
+      }
    }
 
-   return winner;
+   roundWinnerDOM.textContent = "Round Winner: " + winner;
+   calcScore(winner, Number(currentRoundCount));
 };
 
-/**
- * pseudocode of making decision who would win;
- * 
- * create variable for each player, computer and tied
- * increment them based on the round result
- * compare both player and computer and log wether
- * either of them would win or the result is tied;
- * 
- * if player > computer then player win else computer win;
- */
+const calcScore = (winner, roundCount) => {
+   const playerScoreDOM = document.querySelector(".playerScore");
+   const computerScoreDOM = document.querySelector(".computerScore");
 
-const game = () => {
-   let playerScore = 0;
-   let computerScore = 0;
-   let tiedScore = 0;
-
-   for(let i = 0; i < 5; i++) {
-      const result = playRound(getPlayerChoice(), getComputerChoice());
-      console.log(result);
-      result === "player" ? playerScore++ : result === "computer" ? computerScore++ : tiedScore++; 
+   if (winner === "player") {
+      const currentScore = playerScoreDOM.textContent.charAt(
+         playerScoreDOM.textContent.length - 1
+      );
+      playerScoreDOM.textContent = "Player: " + (Number(currentScore) + 1);
+   } else if (winner === "computer") {
+      const currentScore = computerScoreDOM.textContent.charAt(
+         computerScoreDOM.textContent.length - 1
+      );
+      computerScoreDOM.textContent = "Computer: " + (Number(currentScore) + 1);
+   } else {
+      const playerCurrentScore = playerScoreDOM.textContent.charAt(
+         playerScoreDOM.textContent.length - 1
+      );
+      playerScoreDOM.textContent =
+         "Player: " + (Number(playerCurrentScore) + 1);
+      const computerCurrentScore = computerScoreDOM.textContent.charAt(
+         computerScoreDOM.textContent.length - 1
+      );
+      computerScoreDOM.textContent =
+         "Computer: " + (Number(computerCurrentScore) + 1);
    }
 
-   const finalResult = playerScore > computerScore ? "PLAYER WIN!" : playerScore < computerScore ? "COMPUTER WIN!" : "TIED";
-   console.log(finalResult);
-}
+   if (roundCount === 4) {
+      const playerScore = playerScoreDOM.textContent.charAt(
+         playerScoreDOM.textContent.length - 1
+      );
+      const computerScore = computerScoreDOM.textContent.charAt(
+         computerScoreDOM.textContent.length - 1
+      );
 
-game();
+      Number(playerScore) > Number(computerScore)
+         ? alert("Winner: Player!")
+         : Number(playerScore) < Number(computerScore)
+         ? alert("Winner: Computer")
+         : alert("TIED!");
+   }
+};
 
+const optionBtns = document.querySelectorAll(".btn");
+optionBtns.forEach((element) => {
+   element.addEventListener("click", (e) => {
+      const roundDOM = document.querySelector(".round");
+      // It breaks after 10, fix it in the future.
+      const currentRoundCount = roundDOM.textContent.charAt(
+         roundDOM.textContent.length - 1
+      );
 
-
+      if (Number(currentRoundCount) === 5) location.reload();
+      else {
+         const selected = e.target.getAttribute("class").split(" ")[1];
+         playRound(selected, getComputerChoice());
+      }
+   });
+});
