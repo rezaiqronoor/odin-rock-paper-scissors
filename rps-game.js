@@ -31,21 +31,26 @@ const playRound = (playerChoice, computerChoice) => {
             : computerChoice === "paper"
             ? (winner = "computer")
             : (winner = "player");
+            break;
       case "paper":
          computerChoice === "rock"
             ? (winner = "player")
             : computerChoice === "paper"
             ? (winner = "tied")
             : (winner = "computer");
+            break;
       case "scissors":
          computerChoice === "rock"
             ? (winner = "computer")
             : computerChoice === "paper"
             ? (winner = "player")
             : (winner = "tied");
+            break;
       default: {
       }
    }
+
+   debugger;
 
    roundWinnerDOM.textContent = "Round Winner: " + winner;
    calcScore(winner, Number(currentRoundCount));
